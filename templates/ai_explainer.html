@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Code Explainer - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        DevHub 🚀
+    </div>
+
+    <nav>
+
+        <a href="/">Dashboard</a>
+
+        <a href="/projects">Projects</a>
+
+        <a href="/editor">Code Editor</a>
+
+        <a href="/logout">Logout</a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <h1>🤖 AI Code Explainer</h1>
+
+        <p>
+            Paste your code and let AI explain it in simple language.
+        </p>
+
+    </section>
+
+
+    <section class="tool-card">
+
+        <h2>Enter Your Code</h2>
+
+        <br>
+
+        <textarea
+            id="codeInput"
+            placeholder="Example:
+
+def greet(name):
+    print('Hello', name)
+
+greet('Rutika')"
+            style="
+                width:100%;
+                min-height:250px;
+                padding:15px;
+                border:1px solid #ddd;
+                border-radius:8px;
+                resize:vertical;
+                font-family:monospace;
+            "
+        ></textarea>
+
+        <br><br>
+
+        <button onclick="explainCode()">
+            🤖 Explain Code
+        </button>
+
+        <button onclick="clearCode()"
+                style="margin-left:10px;">
+            Clear
+        </button>
+
+    </section>
+
+
+    <section class="tool-card"
+             style="margin-top:25px;">
+
+        <h2>AI Explanation</h2>
+
+        <br>
+
+        <div id="result">
+
+            <p>
+                Your AI code explanation will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <p>© 2026 DevHub</p>
+
+</footer>
+
+
+<script>
+
+async function explainCode() {
+
+    const code =
+        document.getElementById("codeInput")
+        .value
+        .trim();
+
+    const result =
+        document.getElementById("result");
+
+
+    if (!code) {
+
+        result.innerHTML =
+            "<p>Please enter some code.</p>";
+
+        return;
+    }
+
+
+    result.innerHTML = `
+        <p>🤖 AI is analyzing your code...</p>
+    `;
+
+
+    try {
+
+        const response = await fetch("/ai-explainer", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+
+            body: new URLSearchParams({
+                code: code
+            })
+
+        });
+
+
+        const data = await response.json();
+
+
+        if (data.success) {
+
+            result.innerHTML = `
+
+                <h3>🤖 AI Code Explanation</h3>
+
+                <br>
+
+                <pre style="
+                    white-space: pre-wrap;
+                    font-family: inherit;
+                    line-height: 1.6;
+                ">${data.result}</pre>
+
+            `;
+
+        } else {
+
+            result.innerHTML = `
+                <p>❌ ${data.message}</p>
+            `;
+
+        }
+
+
+    } catch (error) {
+
+        result.innerHTML = `
+            <p>❌ Unable to connect to AI.</p>
+            <p>${error.message}</p>
+        `;
+
+    }
+
+}
+
+
+function clearCode() {
+
+    document.getElementById("codeInput").value = "";
+
+    document.getElementById("result").innerHTML =
+        "<p>Your AI code explanation will appear here.</p>";
+
+}
+
+</script>
+
+</body>
+
+</html>

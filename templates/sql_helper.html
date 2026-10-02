@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SQL Helper - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .sql-page {
+            margin-top: 30px;
+        }
+
+        .sql-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .sql-editor {
+            width: 100%;
+            min-height: 300px;
+            padding: 18px;
+            background: #111827;
+            color: #f9fafb;
+            border: none;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            font-size: 15px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .sql-buttons {
+            margin-top: 15px;
+        }
+
+        .sql-buttons button {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sql-output {
+            background: #111827;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 100px;
+            overflow-x: auto;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            DevHub 🚀
+        </div>
+
+        <nav>
+
+            <a href="/">Home</a>
+            |
+            <a href="/projects">Projects</a>
+            |
+            <a href="/editor">Code Editor</a>
+            |
+            <a href="/api-tester">API Tester</a>
+            |
+            <a href="/json-formatter">JSON Formatter</a>
+
+        </nav>
+
+    </header>
+
+
+    <main class="container sql-page">
+
+
+        <section class="sql-card">
+
+            <h1>🗄️ SQL Helper</h1>
+
+            <p>
+                Write, format and check basic SQL queries.
+            </p>
+
+        </section>
+
+
+        <section class="sql-card">
+
+            <textarea
+                id="sqlInput"
+                class="sql-editor"
+                spellcheck="false"
+            >SELECT * FROM users;</textarea>
+
+
+            <div class="sql-buttons">
+
+                <button onclick="formatSQL()">
+                    ✨ Format
+                </button>
+
+                <button onclick="checkSQL()">
+                    ✅ Check Query
+                </button>
+
+                <button onclick="clearSQL()">
+                    🗑️ Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="sql-card">
+
+            <h2>📤 Result</h2>
+
+            <br>
+
+            <div id="status"></div>
+
+            <br>
+
+            <pre id="sqlOutput"
+                 class="sql-output">
+Result will appear here.
+            </pre>
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        function formatSQL() {
+
+            const input =
+                document.getElementById("sqlInput");
+
+            let sql = input.value.trim();
+
+            if (sql === "") {
+
+                document.getElementById("status").textContent =
+                    "❌ Please enter an SQL query.";
+
+                return;
+            }
+
+            sql = sql
+                .replace(/\s+/g, " ")
+                .replace(/\s*,\s*/g, ", ")
+                .replace(/\s*=\s*/g, " = ");
+
+            sql = sql
+                .replace(/\bSELECT\b/gi, "SELECT")
+                .replace(/\bFROM\b/gi, "\nFROM")
+                .replace(/\bWHERE\b/gi, "\nWHERE")
+                .replace(/\bORDER BY\b/gi, "\nORDER BY")
+                .replace(/\bGROUP BY\b/gi, "\nGROUP BY")
+                .replace(/\bVALUES\b/gi, "\nVALUES")
+                .replace(/\bSET\b/gi, "\nSET");
+
+            input.value = sql;
+
+            document.getElementById("sqlOutput").textContent =
+                sql;
+
+            document.getElementById("status").textContent =
+                "✅ SQL formatted successfully.";
+
+            document.getElementById("status").className =
+                "success";
+        }
+
+
+        function checkSQL() {
+
+            const sql =
+                document.getElementById("sqlInput").value
+                .trim()
+                .toUpperCase();
+
+            const output =
+                document.getElementById("sqlOutput");
+
+            const status =
+                document.getElementById("status");
+
+
+            if (sql === "") {
+
+                status.textContent =
+                    "❌ Please enter an SQL query.";
+
+                status.className =
+                    "error";
+
+                return;
+            }
+
+
+            const commands = [
+                "SELECT",
+                "INSERT",
+                "UPDATE",
+                "DELETE",
+                "CREATE",
+                "ALTER",
+                "DROP"
+            ];
+
+
+            const validCommand =
+                commands.some(command =>
+                    sql.startsWith(command)
+                );
+
+
+            if (validCommand) {
+
+                status.textContent =
+                    "✅ SQL query looks valid.";
+
+                status.className =
+                    "success";
+
+                output.textContent =
+                    "Query type detected successfully.";
+
+            } else {
+
+                status.textContent =
+                    "❌ Unknown SQL command.";
+
+                status.className =
+                    "error";
+
+                output.textContent =
+                    "Start your query with SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER or DROP.";
+
+            }
+
+        }
+
+
+        function clearSQL() {
+
+            document.getElementById("sqlInput").value = "";
+
+            document.getElementById("sqlOutput").textContent =
+                "Result will appear here.";
+
+            document.getElementById("status").textContent =
+                "";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

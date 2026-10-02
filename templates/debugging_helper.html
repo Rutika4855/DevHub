@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Debugging Helper - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        DevHub
+    </div>
+
+    <nav>
+
+        <a href="/">Dashboard</a>
+
+        <a href="/projects">Projects</a>
+
+        <a href="/editor">Code Editor</a>
+
+        <a href="/logout">Logout</a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <h1>🐛 Debugging Helper</h1>
+
+        <p>
+            Paste your error message and get a basic explanation
+            and possible solution.
+        </p>
+
+    </section>
+
+
+    <section class="tool-card">
+
+        <h2>Enter Error Message</h2>
+
+        <br>
+
+        <textarea
+            id="errorInput"
+            placeholder="Example: NameError: name 'x' is not defined"
+            style="
+                width:100%;
+                min-height:180px;
+                padding:15px;
+                border:1px solid #ddd;
+                border-radius:8px;
+                resize:vertical;
+                font-family:monospace;
+            "
+        ></textarea>
+
+        <br><br>
+
+        <button onclick="debugError()">
+    🔍 Basic Analyze
+</button>
+
+<button onclick="aiDebugError()"
+        style="margin-left:10px;">
+    🤖 AI Analyze
+</button>
+
+        <button onclick="clearError()"
+                style="margin-left:10px;">
+            Clear
+        </button>
+
+    </section>
+
+
+    <section class="tool-card"
+             style="margin-top:25px;">
+
+        <h2>Debugging Result</h2>
+
+        <br>
+
+        <div id="result">
+
+            <p>
+                Your debugging result will appear here.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <p>© 2026 DevHub</p>
+
+</footer>
+
+
+<script>
+
+function debugError() {
+
+    const error =
+        document.getElementById("errorInput")
+        .value
+        .trim();
+
+    const result =
+        document.getElementById("result");
+
+
+    if (!error) {
+
+        result.innerHTML =
+            "<p>Please enter an error message.</p>";
+
+        return;
+    }
+
+
+    const lowerError =
+        error.toLowerCase();
+
+
+    let errorType = "General Error";
+
+    let meaning =
+        "The application returned an error or invalid input.";
+
+    let solution =
+        "Check the error message, input value, and the line where the problem occurred.";
+
+    let example =
+        "Check the value being entered and make sure it matches the expected format.";
+
+
+    /* Python Errors */
+
+    if (lowerError.includes("nameerror")) {
+
+        errorType = "NameError";
+
+        meaning =
+            "A variable or function is being used before it is defined.";
+
+        solution =
+            "Define the variable or function before using it.";
+
+        example =
+            "x = 10";
+
+
+    } else if (lowerError.includes("syntaxerror")) {
+
+        errorType = "SyntaxError";
+
+        meaning =
+            "There is invalid syntax in the code.";
+
+        solution =
+            "Check brackets, quotes, colons, commas and indentation.";
+
+        example =
+            "if x > 10:";
+
+
+    } else if (lowerError.includes("typeerror")) {
+
+        errorType = "TypeError";
+
+        meaning =
+            "An operation is being performed on an incompatible data type.";
+
+        solution =
+            "Check the data types of the values being used.";
+
+        example =
+            "int('10')";
+
+
+    } else if (lowerError.includes("valueerror")) {
+
+        errorType = "ValueError";
+
+        meaning =
+            "A function received a value of the correct type but an invalid value.";
+
+        solution =
+            "Check whether the entered value is valid and within the expected range.";
+
+        example =
+            "int('abc') will cause a ValueError.";
+
+
+    } else if (lowerError.includes("indexerror")) {
+
+        errorType = "IndexError";
+
+        meaning =
+            "The code is trying to access an index that does not exist.";
+
+        solution =
+            "Check the list length and make sure the index is valid.";
+
+        example =
+            "Use a valid index such as list[0].";
+
+
+    } else if (lowerError.includes("keyerror")) {
+
+        errorType = "KeyError";
+
+        meaning =
+            "A dictionary key does not exist.";
+
+        solution =
+            "Check whether the key exists before accessing it.";
+
+        example =
+            "dictionary.get('name')";
+
+
+    } else if (lowerError.includes("zerodivisionerror")) {
+
+        errorType = "ZeroDivisionError";
+
+        meaning =
+            "The program is trying to divide a number by zero.";
+
+        solution =
+            "Make sure the denominator is not zero.";
+
+        example =
+            "if b != 0: result = a / b";
+
+
+    } else if (lowerError.includes("attributeerror")) {
+
+        errorType = "AttributeError";
+
+        meaning =
+            "An object does not have the attribute or method being accessed.";
+
+        solution =
+            "Check the object type and verify the attribute or method name.";
+
+        example =
+            "Check whether the object actually has that method.";
+
+
+    } else if (lowerError.includes("importerror") ||
+               lowerError.includes("modulenotfounderror")) {
+
+        errorType = "Import / Module Error";
+
+        meaning =
+            "Python could not find or import the requested module.";
+
+        solution =
+            "Check the module name and install the required package.";
+
+        example =
+            "pip install package-name";
+
+
+    } else if (lowerError.includes("filenotfounderror")) {
+
+        errorType = "FileNotFoundError";
+
+        meaning =
+            "The requested file or path could not be found.";
+
+        solution =
+            "Check the file name and file path.";
+
+        example =
+            "Make sure the file exists at the specified location.";
+
+
+    }
+
+
+    /* JavaScript Errors */
+
+    else if (lowerError.includes("referenceerror")) {
+
+        errorType = "ReferenceError";
+
+        meaning =
+            "JavaScript is trying to use a variable that has not been defined.";
+
+        solution =
+            "Define the variable before using it.";
+
+        example =
+            "let name = 'DevHub';";
+
+
+    } else if (lowerError.includes("cannot read properties")) {
+
+        errorType = "JavaScript Null/Undefined Error";
+
+        meaning =
+            "The code is trying to read a property from null or undefined.";
+
+        solution =
+            "Check that the object exists before accessing its property.";
+
+        example =
+            "if (user) { console.log(user.name); }";
+
+
+    } else if (lowerError.includes("is not a function")) {
+
+        errorType = "JavaScript Function Error";
+
+        meaning =
+            "The code is trying to call something as a function, but it is not a function.";
+
+        solution =
+            "Check the variable and make sure the function name is correct.";
+
+        example =
+            "Check whether myFunction is actually defined as a function.";
+
+
+    } else if (lowerError.includes("undefined")) {
+
+        errorType = "Undefined Value Error";
+
+        meaning =
+            "A variable, property or result contains an undefined value.";
+
+        solution =
+            "Check whether the value has been defined or initialized.";
+
+        example =
+            "let name = 'DevHub';";
+
+
+    }
+
+
+    /* Web / Validation Errors */
+
+    else if (
+        lowerError.includes("invalid input") ||
+        lowerError.includes("invalid value") ||
+        lowerError.includes("please enter a valid") ||
+        lowerError.includes("invalid data")
+    ) {
+
+        errorType = "Invalid Input / Validation Error";
+
+        meaning =
+            "The application received an input value that does not match the expected format or allowed values.";
+
+        solution =
+            "Check the entered value. Make sure it is not empty and matches the required format, type, range or allowed options.";
+
+        example =
+            "For example, enter a valid number, email address, date or value from the available options.";
+
+
+    } else if (
+        lowerError.includes("required") ||
+        lowerError.includes("missing field") ||
+        lowerError.includes("must not be empty")
+    ) {
+
+        errorType = "Missing Required Input";
+
+        meaning =
+            "A required field or value has not been provided.";
+
+        solution =
+            "Fill in all required fields before submitting.";
+
+        example =
+            "Username, email or password may be required.";
+
+
+    } else if (
+        lowerError.includes("not found") ||
+        lowerError.includes("404")
+    ) {
+
+        errorType = "404 Not Found";
+
+        meaning =
+            "The requested page, file or resource could not be found.";
+
+        solution =
+            "Check the URL, route, file name or resource ID.";
+
+        example =
+            "Verify that the requested route exists.";
+
+
+    } else if (
+        lowerError.includes("unauthorized") ||
+        lowerError.includes("401")
+    ) {
+
+        errorType = "401 Unauthorized";
+
+        meaning =
+            "Authentication is required or the login credentials are invalid.";
+
+        solution =
+            "Log in again and check your authentication credentials.";
+
+
+    } else if (
+        lowerError.includes("forbidden") ||
+        lowerError.includes("403")
+    ) {
+
+        errorType = "403 Forbidden";
+
+        meaning =
+            "The server understood the request but does not allow access.";
+
+        solution =
+            "Check permissions and make sure the logged-in user has access.";
+
+
+    } else if (
+        lowerError.includes("server error") ||
+        lowerError.includes("500") ||
+        lowerError.includes("internal server error")
+    ) {
+
+        errorType = "500 Internal Server Error";
+
+        meaning =
+            "The server encountered an unexpected problem while processing the request.";
+
+        solution =
+            "Check the server terminal, application logs and backend code.";
+
+        example =
+            "For Flask, check the traceback shown in the terminal.";
+
+
+    } else if (
+        lowerError.includes("connection refused") ||
+        lowerError.includes("failed to fetch") ||
+        lowerError.includes("network error")
+    ) {
+
+        errorType = "Connection / Network Error";
+
+        meaning =
+            "The application could not connect to the requested server or resource.";
+
+        solution =
+            "Check your internet connection, server status, URL and port.";
+
+        example =
+            "Make sure the server is running on the correct port.";
+
+
+    } else if (
+        lowerError.includes("timeout") ||
+        lowerError.includes("timed out")
+    ) {
+
+        errorType = "Timeout Error";
+
+        meaning =
+            "The operation took too long and was stopped.";
+
+        solution =
+            "Check the network, server response time and timeout settings.";
+
+
+    }
+
+
+    /* SQL Errors */
+
+    else if (
+        lowerError.includes("sql") ||
+        lowerError.includes("syntax error near")
+    ) {
+
+        errorType = "SQL Error";
+
+        meaning =
+            "There may be a problem with the SQL query or database operation.";
+
+        solution =
+            "Check SQL keywords, table names, column names, quotes and query syntax.";
+
+        example =
+            "SELECT * FROM users;";
+
+
+    } else if (
+        lowerError.includes("no such table") ||
+        lowerError.includes("table doesn't exist")
+    ) {
+
+        errorType = "Database Table Error";
+
+        meaning =
+            "The requested database table does not exist.";
+
+        solution =
+            "Check the table name and make sure the required table has been created.";
+
+
+    }
+
+
+    /* File / Permission Errors */
+
+    else if (
+        lowerError.includes("permission denied") ||
+        lowerError.includes("access denied")
+    ) {
+
+        errorType = "Permission Error";
+
+        meaning =
+            "The application does not have permission to access the requested resource.";
+
+        solution =
+            "Check file, folder or user permissions.";
+
+
+    }
+
+
+    /* Generic fallback */
+
+    else {
+
+        errorType = "General / Unknown Error";
+
+        meaning =
+            "The exact error type was not recognized, but the message contains useful information about the problem.";
+
+        solution =
+            "Read the complete error message, check the line where it occurred, verify the input values and inspect the application logs.";
+
+        example =
+            "Try searching the exact error message in your project documentation or terminal output.";
+
+    }
+
+
+    result.innerHTML = `
+
+        <h3>🔴 Error Type</h3>
+
+        <p>${errorType}</p>
+
+        <br>
+
+        <h3>📌 Meaning</h3>
+
+        <p>${meaning}</p>
+
+        <br>
+
+        <h3>💡 Possible Solution</h3>
+
+        <p>${solution}</p>
+
+        <br>
+
+        <h3>📝 Example / Tip</h3>
+
+        <p>${example}</p>
+
+    `;
+
+}
+
+
+function clearError() {
+
+    document.getElementById("errorInput").value = "";
+
+    document.getElementById("result").innerHTML =
+        "<p>Your debugging result will appear here.</p>";
+
+}
+async function aiDebugError() {
+
+    const error =
+        document.getElementById("errorInput")
+        .value
+        .trim();
+
+    const result =
+        document.getElementById("result");
+
+    if (!error) {
+
+        result.innerHTML =
+            "<p>Please enter an error message.</p>";
+
+        return;
+    }
+
+    result.innerHTML = `
+        <p>🤖 AI is analyzing your error...</p>
+    `;
+
+    try {
+
+        const response = await fetch("/ai-debugger", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+
+            body: new URLSearchParams({
+                error_text: error
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            result.innerHTML = `
+                <h3>🤖 AI Debugging Result</h3>
+
+                <br>
+
+                <pre style="
+                    white-space: pre-wrap;
+                    font-family: inherit;
+                    line-height: 1.6;
+                ">${data.result}</pre>
+            `;
+
+        } else {
+
+            result.innerHTML = `
+                <p>❌ ${data.message}</p>
+            `;
+
+        }
+
+    } catch (error) {
+
+        result.innerHTML = `
+            <p>❌ Unable to connect to AI Debugger.</p>
+            <p>${error.message}</p>
+        `;
+
+    }
+}
+</script>
+
+</body>
+
+</html>

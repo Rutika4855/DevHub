@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Code Editor - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .editor-page {
+            margin-top: 30px;
+        }
+
+        .editor-header {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .editor-header select {
+            padding: 10px;
+            margin-left: 10px;
+            border-radius: 6px;
+        }
+
+        .code-editor {
+            width: 100%;
+            min-height: 450px;
+            background: #111827;
+            color: #f9fafb;
+            border: none;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: Consolas, monospace;
+            font-size: 15px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .editor-buttons {
+            margin-top: 15px;
+        }
+
+        .editor-buttons button {
+            margin-right: 10px;
+        }
+
+        .output-box {
+            margin-top: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            DevHub 🚀
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            |
+            <a href="/projects">Projects</a>
+        </nav>
+
+    </header>
+
+
+    <main class="container editor-page">
+
+        <section class="editor-header">
+
+            <h1>💻 Code Editor</h1>
+
+            <p>
+                Write and test your code inside DevHub.
+            </p>
+
+            <br>
+
+            <label>
+                Language:
+            </label>
+
+            <select id="language">
+
+                <option value="python">
+                    Python
+                </option>
+
+                <option value="javascript">
+                    JavaScript
+                </option>
+
+                <option value="html">
+                    HTML
+                </option>
+
+                <option value="css">
+                    CSS
+                </option>
+
+            </select>
+
+        </section>
+
+
+        <section>
+
+            <textarea
+                id="code"
+                class="code-editor"
+                spellcheck="false"
+            ># Write your code here
+
+print("Hello from DevHub!")</textarea>
+
+
+            <div class="editor-buttons">
+
+                <button onclick="runCode()">
+                    ▶ Run
+                </button>
+
+                <button onclick="clearCode()">
+                    🗑️ Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="output-box">
+
+            <h2>Output</h2>
+
+            <br>
+
+            <pre id="output">Click Run to see output.</pre>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        function runCode() {
+
+            const language =
+                document.getElementById("language").value;
+
+            const code =
+                document.getElementById("code").value;
+
+            const output =
+                document.getElementById("output");
+
+
+            if (code.trim() === "") {
+
+                output.textContent =
+                    "Please write some code first.";
+
+                return;
+
+            }
+
+
+            if (language === "python") {
+
+                output.textContent =
+                    "Python code received.\n\n" +
+                    "Server-side execution will be added later.";
+
+            }
+
+            else {
+
+                output.textContent =
+                    "Selected Language: " +
+                    language +
+                    "\n\nCode received successfully.";
+
+            }
+
+        }
+
+
+        function clearCode() {
+
+            document.getElementById("code").value = "";
+
+            document.getElementById("output").textContent =
+                "Editor cleared.";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>JSON Formatter - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .json-page {
+            margin-top: 30px;
+        }
+
+        .json-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .json-editor {
+            width: 100%;
+            min-height: 350px;
+            padding: 18px;
+            background: #111827;
+            color: #f9fafb;
+            border: none;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            font-size: 15px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .json-buttons {
+            margin-top: 15px;
+        }
+
+        .json-buttons button {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .json-output {
+            background: #111827;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 100px;
+            overflow-x: auto;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            DevHub 🚀
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            |
+            <a href="/projects">Projects</a>
+            |
+            <a href="/editor">Code Editor</a>
+            |
+            <a href="/api-tester">API Tester</a>
+        </nav>
+
+    </header>
+
+
+    <main class="container json-page">
+
+        <section class="json-card">
+
+            <h1>📋 JSON Formatter</h1>
+
+            <p>
+                Format, validate and minify JSON data.
+            </p>
+
+        </section>
+
+
+        <section class="json-card">
+
+            <textarea
+                id="jsonInput"
+                class="json-editor"
+                spellcheck="false"
+            >{
+  "name": "DevHub",
+  "type": "Developer Workspace",
+  "version": 1
+}</textarea>
+
+
+            <div class="json-buttons">
+
+                <button onclick="formatJSON()">
+                    ✨ Format
+                </button>
+
+                <button onclick="validateJSON()">
+                    ✅ Validate
+                </button>
+
+                <button onclick="minifyJSON()">
+                    🗜️ Minify
+                </button>
+
+                <button onclick="clearJSON()">
+                    🗑️ Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="json-card">
+
+            <h2>📤 Result</h2>
+
+            <br>
+
+            <div id="status"></div>
+
+            <br>
+
+            <pre id="jsonOutput"
+                 class="json-output">
+Result will appear here.
+            </pre>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        function getJSON() {
+
+            const input =
+                document.getElementById("jsonInput").value;
+
+            return JSON.parse(input);
+
+        }
+
+
+        function formatJSON() {
+
+            const output =
+                document.getElementById("jsonOutput");
+
+            const status =
+                document.getElementById("status");
+
+            try {
+
+                const data = getJSON();
+
+                const formatted =
+                    JSON.stringify(data, null, 4);
+
+                document.getElementById("jsonInput").value =
+                    formatted;
+
+                output.textContent =
+                    formatted;
+
+                status.textContent =
+                    "✅ Valid JSON - Formatted successfully.";
+
+                status.className =
+                    "success";
+
+            } catch (error) {
+
+                output.textContent =
+                    error.message;
+
+                status.textContent =
+                    "❌ Invalid JSON";
+
+                status.className =
+                    "error";
+            }
+        }
+
+
+        function validateJSON() {
+
+            const output =
+                document.getElementById("jsonOutput");
+
+            const status =
+                document.getElementById("status");
+
+            try {
+
+                getJSON();
+
+                output.textContent =
+                    "JSON is valid.";
+
+                status.textContent =
+                    "✅ Valid JSON";
+
+                status.className =
+                    "success";
+
+            } catch (error) {
+
+                output.textContent =
+                    error.message;
+
+                status.textContent =
+                    "❌ Invalid JSON";
+
+                status.className =
+                    "error";
+            }
+        }
+
+
+        function minifyJSON() {
+
+            const output =
+                document.getElementById("jsonOutput");
+
+            const status =
+                document.getElementById("status");
+
+            try {
+
+                const data = getJSON();
+
+                const minified =
+                    JSON.stringify(data);
+
+                document.getElementById("jsonInput").value =
+                    minified;
+
+                output.textContent =
+                    minified;
+
+                status.textContent =
+                    "✅ JSON Minified successfully.";
+
+                status.className =
+                    "success";
+
+            } catch (error) {
+
+                output.textContent =
+                    error.message;
+
+                status.textContent =
+                    "❌ Invalid JSON";
+
+                status.className =
+                    "error";
+            }
+        }
+
+
+        function clearJSON() {
+
+            document.getElementById("jsonInput").value = "";
+
+            document.getElementById("jsonOutput").textContent =
+                "Result will appear here.";
+
+            document.getElementById("status").textContent =
+                "";
+        }
+
+    </script>
+
+</body>
+
+</html>

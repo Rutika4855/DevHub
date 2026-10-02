@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Structure Generator - DevHub</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .generator-form label {
+            display: block;
+            margin-top: 18px;
+            font-weight: 600;
+        }
+        .generator-form input,
+        .generator-form select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        #output {
+            background: #111827;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            overflow: auto;
+            min-height: 180px;
+            white-space: pre;
+            margin-top: 20px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">DevHub 🚀</div>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/projects">Projects</a>
+        <a href="/editor">Code Editor</a>
+        <a href="/logout">Logout</a>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <h1>📁 Project Structure Generator</h1>
+        <p>Generate a starter folder and file structure for your project.</p>
+    </section>
+
+    <section class="tool-card">
+        <h2>Generate Project Structure</h2>
+
+        <form class="generator-form" id="generatorForm">
+            <label for="projectName">Project Name</label>
+            <input
+                type="text"
+                id="projectName"
+                placeholder="e.g. my_flask_app"
+                maxlength="50"
+                required
+            >
+
+            <label for="technology">Choose Technology</label>
+            <select id="technology">
+                <option value="flask">Python Flask</option>
+                <option value="django">Python Django</option>
+                <option value="html">HTML, CSS and JavaScript</option>
+                <option value="react">React</option>
+                <option value="node">Node.js / Express</option>
+            </select>
+
+            <div class="action-buttons">
+    <button type="submit">Generate Structure</button>
+
+    <button type="button" id="copyButton">
+        Copy Structure
+    </button>
+
+    <button type="button" id="downloadButton">
+        Download TXT
+    </button>
+    <button type="button" id="zipButton">Download ZIP</button>
+</div>
+        </form>
+
+        <pre id="output" aria-live="polite">Your project structure will appear here...</pre>
+        <p id="status" role="status"></p>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>© 2026 DevHub</p>
+</footer>
+
+<script>
+const form = document.getElementById("generatorForm");
+const output = document.getElementById("output");
+const status = document.getElementById("status");
+
+function safeProjectName(name) {
+    return name.replace(/[^a-zA-Z0-9_-]/g, "_");
+}
+
+const structures = {
+    flask: name => `${name}/
+├── app.py
+├── requirements.txt
+├── README.md
+├── .env.example
+├── templates/
+│   └── index.html
+└── static/
+    ├── css/
+    │   └── style.css
+    └── js/
+        └── script.js`,
+
+    django: name => `${name}/
+├── manage.py
+├── requirements.txt
+├── README.md
+├── ${name}/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── asgi.py
+│   └── wsgi.py
+└── core/
+    ├── views.py
+    ├── urls.py
+    └── models.py`,
+
+    html: name => `${name}/
+├── index.html
+├── README.md
+└── assets/
+    ├── css/
+    │   └── style.css
+    ├── js/
+    │   └── script.js
+    └── images/`,
+
+    react: name => `${name}/
+├── package.json
+├── index.html
+├── README.md
+├── public/
+└── src/
+    ├── main.jsx
+    ├── App.jsx
+    ├── components/
+    ├── pages/
+    └── assets/`,
+
+    node: name => `${name}/
+├── package.json
+├── server.js
+├── README.md
+├── .env.example
+├── routes/
+├── controllers/
+├── models/
+└── middleware/`
+};
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const rawName = document.getElementById("projectName").value.trim();
+    const technology = document.getElementById("technology").value;
+
+    if (!rawName) {
+        output.textContent = "Please enter a project name.";
+        status.textContent = "";
+        return;
+    }
+
+    const name = safeProjectName(rawName);
+
+    if (!name || !/[a-zA-Z0-9]/.test(name)) {
+        output.textContent = "Enter a project name containing letters or numbers.";
+        status.textContent = "";
+        return;
+    }
+
+    output.textContent = structures[technology](name);
+    status.textContent = "Structure generated successfully!";
+});
+
+document.getElementById("copyButton").addEventListener("click", async function() {
+    const text = output.textContent;
+
+    if (!text || text === "Your project structure will appear here...") {
+        status.textContent = "Generate a structure first.";
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(text);
+        status.textContent = "Structure copied successfully!";
+    } catch (error) {
+        status.textContent = "Copy failed. Select the structure and copy it manually.";
+    }
+});
+document.getElementById("downloadButton").addEventListener("click", function() {
+
+    const text = output.textContent;
+
+    if (!text || text === "Your project structure will appear here...") {
+        status.textContent = "Generate a structure first.";
+        return;
+    }
+
+    const projectName =
+        document.getElementById("projectName").value.trim() || "project";
+
+    const safeName =
+        projectName.replace(/[^a-zA-Z0-9_-]/g, "_");
+
+    const blob = new Blob(
+        [text],
+        { type: "text/plain;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = safeName + "_structure.txt";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+    status.textContent = "Structure downloaded successfully!";
+});
+document.getElementById("zipButton").addEventListener("click", function() {
+
+    const projectName = document.getElementById("projectName").value.trim();
+    const technology = document.getElementById("technology").value;
+
+    if (!projectName) {
+        status.textContent = "Please enter a project name.";
+        return;
+    }
+
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/download-project-zip";
+
+    const nameInput = document.createElement("input");
+    nameInput.type = "hidden";
+    nameInput.name = "project_name";
+    nameInput.value = projectName;
+
+    const technologyInput = document.createElement("input");
+    technologyInput.type = "hidden";
+    technologyInput.name = "technology";
+    technologyInput.value = technology;
+
+    form.appendChild(nameInput);
+    form.appendChild(technologyInput);
+
+    document.body.appendChild(form);
+    form.submit();
+});
+</script>
+
+</body>
+</html>

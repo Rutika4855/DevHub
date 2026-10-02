@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>README Generator - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .readme-page {
+            margin-top: 30px;
+        }
+
+        .readme-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .readme-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .readme-form label {
+            font-weight: bold;
+        }
+
+        .readme-form input,
+        .readme-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .readme-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .readme-buttons {
+            margin-top: 15px;
+        }
+
+        .readme-buttons button {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .readme-output {
+            width: 100%;
+            min-height: 500px;
+            background: #111827;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            DevHub 🚀
+        </div>
+
+        <nav>
+
+            <a href="/">Home</a>
+            |
+            <a href="/projects">Projects</a>
+            |
+            <a href="/editor">Code Editor</a>
+            |
+            <a href="/api-tester">API Tester</a>
+            |
+            <a href="/json-formatter">JSON Formatter</a>
+            |
+            <a href="/sql-helper">SQL Helper</a>
+
+        </nav>
+
+    </header>
+
+
+    <main class="container readme-page">
+
+
+        <section class="readme-card">
+
+            <h1>📖 README Generator</h1>
+
+            <p>
+                Generate professional README documentation
+                for your project.
+            </p>
+
+        </section>
+
+
+        <section class="readme-card">
+
+            <div class="readme-form">
+
+
+                <label>
+                    Project Name
+                </label>
+
+                <input
+                    type="text"
+                    id="projectName"
+                    placeholder="Example: DevHub"
+                >
+
+
+                <label>
+                    Project Description
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Describe your project..."
+                ></textarea>
+
+
+                <label>
+                    Technologies
+                </label>
+
+                <input
+                    type="text"
+                    id="technologies"
+                    placeholder="Python, Flask, HTML, CSS, JavaScript"
+                >
+
+
+                <label>
+                    Features
+                </label>
+
+                <textarea
+                    id="features"
+                    placeholder="Project Manager, API Tester, JSON Formatter..."
+                ></textarea>
+
+
+                <label>
+                    Installation
+                </label>
+
+                <textarea
+                    id="installation"
+                    placeholder="pip install -r requirements.txt"
+                ></textarea>
+
+
+                <label>
+                    Usage
+                </label>
+
+                <textarea
+                    id="usage"
+                    placeholder="python app.py"
+                ></textarea>
+
+
+                <label>
+                    Author
+                </label>
+
+                <input
+                    type="text"
+                    id="author"
+                    placeholder="Your Name"
+                >
+
+
+            </div>
+
+
+            <div class="readme-buttons">
+
+                <button onclick="generateREADME()">
+                    🚀 Generate README
+                </button>
+
+                <button onclick="copyREADME()">
+                    📋 Copy README
+                </button>
+
+                <button onclick="clearREADME()">
+                    🗑️ Clear
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="readme-card">
+
+            <h2>
+                📄 Generated README
+            </h2>
+
+            <br>
+
+            <pre id="readmeOutput"
+                 class="readme-output">Your README will appear here.</pre>
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        function generateREADME() {
+
+            const projectName =
+                document.getElementById("projectName").value;
+
+            const description =
+                document.getElementById("description").value;
+
+            const technologies =
+                document.getElementById("technologies").value;
+
+            const features =
+                document.getElementById("features").value;
+
+            const installation =
+                document.getElementById("installation").value;
+
+            const usage =
+                document.getElementById("usage").value;
+
+            const author =
+                document.getElementById("author").value;
+
+
+            const featureList =
+                features
+                    .split(",")
+                    .map(feature => "- " + feature.trim())
+                    .join("\n");
+
+
+            const readme = `# ${projectName || "Project Name"}
+
+## Description
+
+${description || "Project description goes here."}
+
+## Technologies
+
+${technologies || "Technologies used in this project."}
+
+## Features
+
+${featureList || "- Feature 1"}
+
+## Installation
+
+\`\`\`bash
+${installation || "Installation steps go here."}
+\`\`\`
+
+## Usage
+
+\`\`\`bash
+${usage || "Usage instructions go here."}
+\`\`\`
+
+## Author
+
+${author || "Your Name"}
+`;
+
+
+            document.getElementById("readmeOutput")
+                .textContent = readme;
+
+        }
+
+
+        function copyREADME() {
+
+            const readme =
+                document.getElementById("readmeOutput")
+                    .textContent;
+
+
+            navigator.clipboard.writeText(readme)
+                .then(function () {
+
+                    alert("README copied successfully!");
+
+                })
+                .catch(function () {
+
+                    alert("Unable to copy README.");
+
+                });
+
+        }
+
+
+        function clearREADME() {
+
+            document.getElementById("projectName").value = "";
+
+            document.getElementById("description").value = "";
+
+            document.getElementById("technologies").value = "";
+
+            document.getElementById("features").value = "";
+
+            document.getElementById("installation").value = "";
+
+            document.getElementById("usage").value = "";
+
+            document.getElementById("author").value = "";
+
+            document.getElementById("readmeOutput")
+                .textContent =
+                "Your README will appear here.";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

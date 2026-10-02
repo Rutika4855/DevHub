@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DevHub Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            DevHub 🚀
+        </div>
+
+        <nav>
+
+    <a href="/">Dashboard</a>
+
+    <a href="/projects">
+        Projects
+    </a>
+
+    <a href="/editor">
+        Code Editor
+    </a>
+
+   <span class="user-welcome">
+    Welcome, {{ current_user.username }}
+</span>
+
+<a href="/logout">
+    Logout
+</a>                  
+</nav>
+
+    </header>
+
+
+    <main class="container">
+
+
+        <!-- Welcome Section -->
+
+        <section class="hero">
+
+            <h1>
+                Welcome to DevHub 🚀
+            </h1>
+
+            <p>
+                Your All-in-One Developer Workspace
+            </p>
+
+            <p class="hero-subtitle">
+                Build, test, manage and document your projects
+                from one place.
+            </p>
+
+        </section>
+
+
+        <!-- Tools -->
+
+        <section class="tools">
+
+            <h2>
+                Developer Tools
+            </h2>
+
+
+            <div class="tools-grid">
+
+
+                <!-- Project Manager -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        📝
+                    </div>
+
+                    <h3>
+                        Project Manager
+                    </h3>
+
+                    <p>
+                        Create, edit and manage your development projects.
+                    </p>
+
+                    <a href="/projects">
+                        <button type="button">
+                            Open Tool →
+                        </button>
+                    </a>
+
+                </div>
+
+
+                <!-- Code Editor -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        💻
+                    </div>
+
+                    <h3>
+                        Code Editor
+                    </h3>
+
+                    <p>
+                        Write and manage your code in one workspace.
+                    </p>
+
+                    <a href="/editor">
+                        <button type="button">
+                            Open Tool →
+                        </button>
+                    </a>
+
+                </div>
+
+
+                <!-- API Tester -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        🔗
+                    </div>
+
+                    <h3>
+                        API Tester
+                    </h3>
+
+                    <p>
+                        Send API requests and inspect responses.
+                    </p>
+
+                    <a href="/api-tester">
+                        <button type="button">
+                            Open Tool →
+                        </button>
+                    </a>
+
+                </div>
+
+
+                <!-- JSON Formatter -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        📋
+                    </div>
+
+                    <h3>
+                        JSON Formatter
+                    </h3>
+
+                    <p>
+                        Format, validate and minify JSON data.
+                    </p>
+
+                    <a href="/json-formatter">
+                        <button type="button">
+                            Open Tool →
+                        </button>
+                    </a>
+
+                </div>
+
+
+                <!-- SQL Helper -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        🗄️
+                    </div>
+
+                    <h3>
+                        SQL Helper
+                    </h3>
+
+                    <p>
+                        Write, format and check SQL queries.
+                    </p>
+
+                    <a href="/sql-helper">
+                        <button type="button">
+                            Open Tool →
+                        </button>
+                    </a>
+
+                </div>
+
+
+                <!-- README Generator -->
+
+                <div class="tool-card">
+
+                    <div class="tool-icon">
+                        📖
+                    </div>
+
+                    <h3>
+                        README Generator
+                    </h3>
+
+                    <p>
+                        Generate professional project documentation.
+                    </p>
+
+                    <a href="/readme-generator">
+                        <button type="button">
+                            Open Tool →
+                        </button>
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>
+            DevHub 🚀 — All-in-One Developer Workspace
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

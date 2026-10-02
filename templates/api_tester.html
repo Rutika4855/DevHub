@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>API Tester - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .api-page {
+            margin-top: 30px;
+        }
+
+        .api-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .api-card h1 {
+            margin-bottom: 10px;
+        }
+
+        .api-form {
+            display: grid;
+            gap: 15px;
+        }
+
+        .api-form label {
+            font-weight: bold;
+        }
+
+        .api-form input,
+        .api-form select,
+        .api-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .api-form textarea {
+            min-height: 180px;
+            font-family: Consolas, monospace;
+        }
+
+        .send-button {
+            background: #1f2937;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .send-button:hover {
+            background: #374151;
+        }
+
+        .response-box {
+            background: #111827;
+            color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        .status {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            DevHub 🚀
+        </div>
+
+        <nav>
+            <a href="/">Home</a>
+            |
+            <a href="/projects">Projects</a>
+            |
+            <a href="/editor">Code Editor</a>
+        </nav>
+
+    </header>
+
+
+    <main class="container api-page">
+
+
+        <section class="api-card">
+
+            <h1>🔗 API Tester</h1>
+
+            <p>
+                Test API requests and view responses.
+            </p>
+
+        </section>
+
+
+        <section class="api-card">
+
+            <form method="POST" class="api-form">
+
+
+                <label>
+                    API URL
+                </label>
+
+                <input
+                    type="text"
+                    name="url"
+                    placeholder="https://jsonplaceholder.typicode.com/posts/1"
+                    required
+                >
+
+
+                <label>
+                    Method
+                </label>
+
+                <select name="method">
+
+                    <option value="GET">
+                        GET
+                    </option>
+
+                    <option value="POST">
+                        POST
+                    </option>
+
+                    <option value="PUT">
+                        PUT
+                    </option>
+
+                    <option value="DELETE">
+                        DELETE
+                    </option>
+
+                </select>
+
+
+                <label>
+                    Request Body
+                </label>
+
+                <textarea
+                    name="body"
+                    placeholder='{"title":"DevHub","body":"Hello","userId":1}'
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    class="send-button"
+                >
+                    🚀 Send Request
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+        {% if result %}
+
+        <section class="api-card">
+
+            <h2>
+                📡 Response
+            </h2>
+
+            <br>
+
+            <div class="status">
+                Status: {{ result.status }}
+            </div>
+
+            <div class="response-box">
+
+                <pre>{{ result.response }}</pre>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+    </main>
+
+</body>
+
+</html>

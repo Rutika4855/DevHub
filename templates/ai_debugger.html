@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Debugger - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        DevHub 🚀
+    </div>
+
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/projects">Projects</a>
+        <a href="/editor">Code Editor</a>
+        <a href="/ai-explainer">AI Code Explainer</a>
+        <a href="/ai-debugger">AI Debugger</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <h1>🐛 AI Debugger</h1>
+
+        <p>
+            Paste your programming error and let AI find
+            the cause and solution.
+        </p>
+
+    </section>
+
+
+    <section class="tool-card">
+
+        <h2>Enter Your Error</h2>
+
+        <form method="POST">
+
+            <textarea
+                name="error_text"
+                rows="12"
+                placeholder="Paste your programming error here..."
+                required
+            ></textarea>
+
+            <br><br>
+
+            <button type="submit">
+                🐛 Debug Error
+            </button>
+
+        </form>
+
+    </section>
+
+
+    {% if result %}
+
+    <section class="tool-card">
+
+        <h2>🤖 AI Debugging Result</h2>
+
+        {% if result.success %}
+
+            <pre>{{ result.result }}</pre>
+
+            {% if result.model %}
+                <p>
+                    <strong>Model:</strong>
+                    {{ result.model }}
+                </p>
+            {% endif %}
+
+        {% else %}
+
+            <p>
+                ❌ {{ result.message }}
+            </p>
+
+            {% if result.details %}
+
+                <pre>{{ result.details }}</pre>
+
+            {% endif %}
+
+        {% endif %}
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+</body>
+</html>

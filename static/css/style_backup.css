@@ -1,0 +1,185 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+}
+
+/* Navbar */
+
+.navbar {
+    background: #111827;
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 25px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.navbar a:hover {
+    color: #60a5fa;
+}
+
+/* Main */
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Hero */
+
+.hero {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    margin-bottom: 35px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #6b7280;
+    font-size: 18px;
+}
+
+.hero-subtitle {
+    margin-top: 8px;
+    font-size: 15px !important;
+}
+
+/* Tools */
+
+.tools h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+/* Tool Card */
+
+.tool-card {
+    background: white;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+    transition: 0.25s;
+}
+
+.tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.tool-icon {
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.tool-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.tool-card p {
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Button */
+
+.tool-card button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tool-card button:hover {
+    background: #1d4ed8;
+}
+
+/* Footer */
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    margin-top: 40px;
+    color: #6b7280;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+
+    .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .navbar nav {
+        gap: 15px;
+    }
+
+    .container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .hero {
+        padding: 25px;
+    }
+
+    .hero h1 {
+        font-size: 28px;
+    }
+
+    .tools-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

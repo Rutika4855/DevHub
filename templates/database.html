@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>DevHub Database</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .database-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .database-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .database-header h1 {
+            margin-bottom: 10px;
+        }
+
+        .database-header p {
+            color: #6b7280;
+        }
+
+        .database-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            overflow-x: auto;
+        }
+
+        .database-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .database-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .database-table th,
+        .database-table td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        .database-table th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .database-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 25px;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 8px;
+            background: #111827;
+            color: white;
+        }
+
+        .empty-message {
+            color: #6b7280;
+            padding: 15px 0;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Navbar -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            DevHub 🚀
+        </div>
+
+        <nav>
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/projects">
+                Projects
+            </a>
+
+            <a href="/database">
+                Database
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- Database -->
+
+    <main class="database-container">
+
+
+        <a href="/" class="back-button">
+            ← Back to Dashboard
+        </a>
+
+
+        <div class="database-header">
+
+            <h1>
+                🗄️ Database Viewer
+            </h1>
+
+            <p>
+                View your DevHub database records
+            </p>
+
+        </div>
+
+
+
+        <!-- Users Table -->
+
+        <section class="database-section">
+
+            <h2>
+                👤 Users
+            </h2>
+
+
+            {% if users %}
+
+            <table class="database-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Username
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr>
+
+                        <td>
+                            {{ user["id"] }}
+                        </td>
+
+                        <td>
+                            {{ user["username"] }}
+                        </td>
+
+                        <td>
+                            {{ user["email"] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <p class="empty-message">
+                No users found.
+            </p>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- Projects Table -->
+
+        <section class="database-section">
+
+            <h2>
+                📁 Projects
+            </h2>
+
+
+            {% if projects %}
+
+            <table class="database-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Project Name
+                        </th>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Technology
+                        </th>
+
+                        <th>
+                            User ID
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for project in projects %}
+
+                    <tr>
+
+                        <td>
+                            {{ project["id"] }}
+                        </td>
+
+                        <td>
+                            {{ project["name"] }}
+                        </td>
+
+                        <td>
+                            {{ project["description"] }}
+                        </td>
+
+                        <td>
+                            {{ project["technology"] }}
+                        </td>
+
+                        <td>
+                            {{ project["user_id"] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <p class="empty-message">
+                No projects found.
+            </p>
+
+            {% endif %}
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <p>
+            DevHub 🚀 — Database Viewer
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

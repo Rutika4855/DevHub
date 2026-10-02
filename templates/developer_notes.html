@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Developer Notes - DevHub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        DevHub
+    </div>
+
+    <nav>
+
+        <a href="/">Dashboard</a>
+
+        <a href="/projects">Projects</a>
+
+        <a href="/editor">Code Editor</a>
+
+        <a href="/logout">Logout</a>
+
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <h1>📝 Developer Notes</h1>
+
+        <p>
+            Write and manage your development notes, commands and code snippets.
+        </p>
+
+    </section>
+
+
+    <section class="tool-card">
+
+        <h2>Add New Note</h2>
+
+        <br>
+
+        <input
+            type="text"
+            id="noteTitle"
+            placeholder="Note title"
+            style="
+                width:100%;
+                padding:12px;
+                margin-bottom:15px;
+                border:1px solid #ddd;
+                border-radius:8px;
+            "
+        >
+
+
+        <textarea
+            id="noteContent"
+            placeholder="Write your note, command or code snippet..."
+            style="
+                width:100%;
+                min-height:180px;
+                padding:15px;
+                border:1px solid #ddd;
+                border-radius:8px;
+                resize:vertical;
+                font-family:monospace;
+            "
+        ></textarea>
+
+
+        <br><br>
+
+        <button onclick="saveNote()">
+            💾 Save Note
+        </button>
+
+        <button onclick="clearForm()"
+                style="margin-left:10px;">
+            Clear
+        </button>
+
+    </section>
+
+
+    <section class="tool-card"
+             style="margin-top:25px;">
+
+        <h2>📚 My Notes</h2>
+
+        <br>
+
+        <div id="notesContainer">
+
+            <p>
+                No notes saved yet.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+
+    <p>© 2026 DevHub</p>
+
+</footer>
+
+
+<script>
+
+function getNotes() {
+
+    return JSON.parse(
+        localStorage.getItem("devhub_notes") || "[]"
+    );
+
+}
+
+
+function saveNotes(notes) {
+
+    localStorage.setItem(
+        "devhub_notes",
+        JSON.stringify(notes)
+    );
+
+}
+
+
+function saveNote() {
+
+    const title =
+        document.getElementById("noteTitle")
+        .value
+        .trim();
+
+    const content =
+        document.getElementById("noteContent")
+        .value
+        .trim();
+
+
+    if (!title || !content) {
+
+        alert("Please enter both title and note.");
+
+        return;
+    }
+
+
+    const notes = getNotes();
+
+
+    notes.push({
+
+        id: Date.now(),
+
+        title: title,
+
+        content: content
+
+    });
+
+
+    saveNotes(notes);
+
+    clearForm();
+
+    displayNotes();
+
+    alert("Note saved successfully!");
+
+}
+
+
+function displayNotes() {
+
+    const container =
+        document.getElementById("notesContainer");
+
+    const notes = getNotes();
+
+
+    if (notes.length === 0) {
+
+        container.innerHTML =
+            "<p>No notes saved yet.</p>";
+
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    notes.forEach(note => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.style.background = "#f4f7fb";
+
+        card.style.padding = "20px";
+
+        card.style.marginBottom = "15px";
+
+        card.style.borderRadius = "10px";
+
+
+        card.innerHTML = `
+
+            <h3>${escapeHTML(note.title)}</h3>
+
+            <br>
+
+            <pre style="
+                white-space:pre-wrap;
+                font-family:monospace;
+            ">${escapeHTML(note.content)}</pre>
+
+            <br>
+
+            <button onclick="deleteNote(${note.id})">
+                🗑️ Delete
+            </button>
+
+        `;
+
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+function deleteNote(id) {
+
+    const notes = getNotes();
+
+
+    const updatedNotes =
+        notes.filter(note => note.id !== id);
+
+
+    saveNotes(updatedNotes);
+
+    displayNotes();
+
+}
+
+
+function clearForm() {
+
+    document.getElementById("noteTitle").value = "";
+
+    document.getElementById("noteContent").value = "";
+
+}
+
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+displayNotes();
+
+</script>
+
+
+</body>
+
+</html>
