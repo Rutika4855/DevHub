@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file
+﻿from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import requests
@@ -35,7 +35,7 @@ if GEMINI_API_KEY:
 else:
     client = None
 
-DATABASE = "devhub.db"
+DATABASE = os.path.join("/tmp", "devhub.db") if os.getenv("VERCEL") else "devhub.db"
 
 
 # ============================================================
@@ -492,7 +492,7 @@ if __name__ == "__main__":
 </head>
 <body>
 
-    <h1>Welcome to Flask 🚀</h1>
+    <h1>Welcome to Flask ðŸš€</h1>
 
 </body>
 </html>
